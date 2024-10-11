@@ -4,7 +4,10 @@ import 'constants.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'screens/home/home_screen.dart';
+import 'package:get/get.dart';
 import 'package:ParodiPub/profile/AuthCheckScreen.dart';  // Schermata di controllo autenticazione
+import 'package:ParodiPub/profile/Account.dart';  // Schermata account
+import 'package:ParodiPub/profile/EditProfile.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,7 +22,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(  // Usa GetMaterialApp invece di MaterialApp
       debugShowCheckedModeBanner: false,
       title: 'Parodi Pub',
 
@@ -40,8 +43,14 @@ class MyApp extends StatelessWidget {
       // Decidi il tema di default
       themeMode: ThemeMode.system,  // Usa il tema di sistema (scuro o chiaro)
 
-      // Controlla se l'utente è autenticato
-      home: const AuthCheckScreen(),  // Inizialmente vai alla schermata di controllo autenticazione
+      // Definisci le rotte con GetX
+      initialRoute: '/',  // Rotta iniziale
+      getPages: [
+        GetPage(name: '/', page: () => const AuthCheckScreen()),  // Schermata di controllo autenticazione
+        GetPage(name: '/home', page: () => const HomeScreen()),  // Schermata home
+        GetPage(name: '/account', page: () => const Account()),  // Schermata account
+        GetPage(name: '/edit-profile', page: () => const EditProfile()), // Schermata modifica del profilo personale
+      ],
     );
   }
 }

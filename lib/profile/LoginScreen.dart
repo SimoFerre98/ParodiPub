@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ParodiPub/widgets/MyTextField.dart';
 import 'package:ParodiPub/profile/auth.dart';
+import 'package:get/get.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -61,18 +62,6 @@ class _LoginScreenState extends State<LoginScreen> {
       print('Registrazione effettuata con successo: ${user.displayName}');
     } else {
       print('Errore durante la registrazione');
-    }
-  }
-
-  // Request login function to firebase
-  Future<void> _login() async {
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
-      );
-    } catch (e) {
-      print('Errore di login: $e');
     }
   }
 
@@ -156,7 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
               //Spazio vuoto
               const SizedBox(height: 25),
 
-              //Bottone epr il Login/registrazione, fa anche un controllo sull'autenticazione
+              //Bottone per il Login/registrazione, fa anche un controllo sull'autenticazione
               ElevatedButton(
                 onPressed: () {
                   isLogin ? SignInUser() : CreateUser();

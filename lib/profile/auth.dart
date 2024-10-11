@@ -62,4 +62,31 @@ class AuthService {
       return null;
     }
   }
+
+
+  // Metodo per effettuare il logout
+  Future<void> signOut() async {
+    try {
+      await _firebaseAuth.signOut(); // Effettua il logout dell'utente
+    } catch (e) {
+      print('Errore durante il logout: $e');
+    }
+  }
+
+  // Metodo per ottendere username utente
+  Future<String> fetchUsername() async {
+    User? currentUser = _firebaseAuth.currentUser;
+    if (currentUser == null) {
+      throw Exception('No user logged in');
+    }
+
+    DocumentSnapshot userDoc = await _firestore.collection('users').doc(currentUser.uid).get();
+    if (!userDoc.exists) {
+      throw Exception('User document does not exist');
+    }
+
+    Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>? ?? {};
+    return userData['username'] as String? ?? 'Username non disponibile';
+  }
+
 }

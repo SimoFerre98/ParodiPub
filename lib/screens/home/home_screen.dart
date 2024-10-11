@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../constants.dart';
-
 import '../../models/product.dart';
 import '../details/details_screen.dart';
 import 'components/categorries.dart';
 import 'components/item_card.dart';
+import 'package:get/get.dart';
+import 'package:ParodiPub/profile/Account.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -35,6 +36,16 @@ class HomeScreen extends StatelessWidget {
             ),
             onPressed: () {},
           ),
+          IconButton(
+            icon: SvgPicture.asset(
+              "assets/icons/AccountAvatar.svg",
+              colorFilter: const ColorFilter.mode(kTextColor, BlendMode.srcIn),
+            ),
+            onPressed: () {
+              Get.toNamed('/account');  // Usa GetX per navigare alla schermata Account
+            },
+          ),
+
           const SizedBox(width: kDefaultPaddin / 2)
         ],
       ),
@@ -44,7 +55,7 @@ class HomeScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: kDefaultPaddin),
             child: Text(
-              "Women",
+              "ParodiPub",
               style: Theme.of(context)
                   .textTheme
                   .titleLarge!
