@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ParodiPub/widgets/MyTextField.dart';
 import 'package:ParodiPub/profile/auth.dart';
 import 'package:get/get.dart';
-
+import 'package:ParodiPub/screens/home/home_screen.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -23,47 +23,80 @@ class _LoginScreenState extends State<LoginScreen> {
   // Istanza di AuthService per gestire le connessioni con Firebase
   final AuthService _authService = AuthService();
 
-  // Metodo per l'accesso dell'utente
-  void SignInUser() async {
-    String input = _emailController.text.trim();
-    String? email;
-
-    if (input.contains('@')) {
-      // L'input è un'email
-      email = input;
-    } else {
-      // L'input è uno username, cerca l'email corrispondente
-      email = await _authService.getEmailByUsername(input);
-    }
-
-    if (email != null) {
-      User? user = await _authService.signInUser(
-        email,
-        _passwordController.text.trim(),
-      );
-      if (user != null) {
-        print('Accesso effettuato con successo: ${user.email}');
-      } else {
-        print('Errore durante il login');
-      }
-    } else {
-      print('Nessun utente trovato con questo username');
-    }
+  // Funzione per validare la password
+  bool isValidPassword(String password) {
+    // Verifica che la password sia di almeno 6 caratteri, contenga una lettera maiuscola e un carattere speciale
+    final RegExp passwordRegExp = RegExp(r'^(?=.*?[A-Z])(?=.*?[!@#\$&*~]).{6,}$');
+    return passwordRegExp.hasMatch(password);
   }
 
-  // Metodo per la creazione dell'utente
+// Funzione per validare l'email
+  bool isValidEmail(String email) {
+    // Verifica che l'email sia in un formato valido
+    final RegExp emailRegExp = RegExp(r'^[a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[a-zA-Z]+');
+    return emailRegExp.hasMatch(email);
+  }
+
+// Metodo per la creazione dell'utente
   void CreateUser() async {
+    String email = _emailController.text.trim();
+    String password = _passwordController.text.trim();
+
+    // Controlla la validità della password
+    if (!isValidPassword(password)) {
+      Get.snackbar('Errore', 'La password deve essere di almeno 6 caratteri, contenere una lettera maiuscola e un carattere speciale.', snackPosition: SnackPosition.BOTTOM);
+      return;
+    }
+
+    // Controlla la validità dell'email
+    if (!isValidEmail(email)) {
+      Get.snackbar('Errore', 'Inserisci un\'email valida.', snackPosition: SnackPosition.BOTTOM);
+      return;
+    }
+
+    // Se i controlli sono validi, procedi con la registrazione
     User? user = await _authService.createUser(
-      _emailController.text.trim(),
-      _passwordController.text.trim(),
-      _usernameController.text.trim()
+        email,
+        password,
+        _usernameController.text.trim()
     );
     if (user != null) {
       print('Registrazione effettuata con successo: ${user.displayName}');
+      Get.offAllNamed('/home'); // Reindirizza alla schermata home
     } else {
       print('Errore durante la registrazione');
     }
   }
+
+// Metodo per l'accesso dell'utente
+  void SignInUser() async {
+    String email = _emailController.text.trim();
+    String password = _passwordController.text.trim();
+
+    // Controlla la validità della password
+    if (!isValidPassword(password)) {
+      Get.snackbar('Errore', 'La password deve essere di almeno 6 caratteri, contenere una lettera maiuscola e un carattere speciale.', snackPosition: SnackPosition.BOTTOM);
+      return;
+    }
+
+    // Controlla la validità dell'email
+    if (!isValidEmail(email)) {
+      Get.snackbar('Errore', 'Inserisci un\'email valida.', snackPosition: SnackPosition.BOTTOM);
+      return;
+    }
+
+    User? user = await _authService.signInUser(
+      email,
+      password,
+    );
+    if (user != null) {
+      print('Accesso effettuato con successo: ${user.email}');
+      Get.offAllNamed('/home'); // Reindirizza alla schermata home
+    } else {
+      print('Errore durante il login');
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {

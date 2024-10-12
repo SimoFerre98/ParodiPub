@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-import 'auth.dart'; // Assicurati che auth.dart gestisca Firebase Authentication
+import 'auth.dart';
 import 'EditProfile.dart';
 import 'package:ParodiPub/profile/ProfileMenuWidget.dart';
 import 'package:get/get.dart';
@@ -25,10 +25,10 @@ class _AccountState extends State<Account> {
 
   // Metodo che fa il logout dell'utente
   Future<void> signOut() async {
-    await _authService.signOut(); // Chiama il metodo signOut nel tuo auth.dart
+    await _authService.signOut();
 
     // Naviga verso la schermata home
-    Get.offAllNamed('/home');
+    Get.offAllNamed('/');
 
     // Mostra un messaggio di successo
     Get.snackbar(
@@ -65,7 +65,7 @@ class _AccountState extends State<Account> {
                   height: 120,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(100),
-                    child: Image.asset('assets/icons/AccountAvatar.png'), // Immagine dell'account
+                    child: Image.asset('assets/icons/BirraMorettiHomePage.png'), // Immagine dell'account
                   ),
                 ),
                 Positioned(
@@ -137,20 +137,16 @@ class _AccountState extends State<Account> {
             const SizedBox(height: 10),
             // Menu delle opzioni dell'account
             ProfileMenuWidget(
-                title: "Wallet Address",
+                title: "Notifiche",
                 icon: LineAwesomeIcons.cog,
                 onPress: () {}),
             ProfileMenuWidget(
-                title: "Trading",
-                icon: LineAwesomeIcons.bar_chart,
+                title: "Cronologia ordini",
+                icon: LineAwesomeIcons.list,
                 onPress: () {}),
             ProfileMenuWidget(
-                title: "Payment Methods",
+                title: "Metodi di pagamento",
                 icon: LineAwesomeIcons.wallet,
-                onPress: () {}),
-            ProfileMenuWidget(
-                title: "Learn Cripto",
-                icon: LineAwesomeIcons.book,
                 onPress: () {}),
             ProfileMenuWidget(
                 title: "Information",

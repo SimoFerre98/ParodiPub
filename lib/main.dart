@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:ParodiPub/profile/AuthCheckScreen.dart';  // Schermata di controllo autenticazione
 import 'package:ParodiPub/profile/Account.dart';  // Schermata account
 import 'package:ParodiPub/profile/EditProfile.dart';
+import 'package:ParodiPub/profile/LoginScreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,6 +51,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/home', page: () => const HomeScreen()),  // Schermata home
         GetPage(name: '/account', page: () => const Account()),  // Schermata account
         GetPage(name: '/edit-profile', page: () => const EditProfile()), // Schermata modifica del profilo personale
+        GetPage(name: '/login', page: () => const LoginScreen()),  // Schermata di login
       ],
     );
   }

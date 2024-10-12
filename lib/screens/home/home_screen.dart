@@ -14,8 +14,9 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white, // Colore sfondo app
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.white,// Colore sfondo navbar
         elevation: 0,/*
         leading: IconButton(
           icon: SvgPicture.asset("assets/icons/back.svg"),
