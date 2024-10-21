@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
-import '../../../constants.dart';
-import '../../../models/product.dart';
+import 'package:ParodiPub/constants.dart';
+import 'package:ParodiPub/models/Product.dart';
 
 class ItemCard extends StatelessWidget {
   const ItemCard({super.key, required this.product, required this.press});
@@ -18,6 +17,9 @@ class ItemCard extends StatelessWidget {
         children: <Widget>[
           Expanded(
             child: Container(
+              // Imposta la larghezza per occupare tutto lo spazio disponibile
+              width: double.infinity,
+              height: 150, // Imposta un'altezza fissa per il contenitore dell'immagine
               padding: const EdgeInsets.all(kDefaultPaddin),
               decoration: BoxDecoration(
                 color: product.color,
@@ -25,14 +27,16 @@ class ItemCard extends StatelessWidget {
               ),
               child: Hero(
                 tag: "${product.id}",
-                child: Image.asset(product.image),
+                child: Image.asset(
+                  product.image,
+                  fit: BoxFit.contain, // Adatta l'immagine al contenitore
+                ),
               ),
             ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: kDefaultPaddin / 4),
             child: Text(
-              // products is out demo list
               product.title,
               style: const TextStyle(color: kTextLightColor),
             ),
@@ -40,7 +44,7 @@ class ItemCard extends StatelessWidget {
           Text(
             "\$${product.price}",
             style: const TextStyle(fontWeight: FontWeight.bold),
-          )
+          ),
         ],
       ),
     );

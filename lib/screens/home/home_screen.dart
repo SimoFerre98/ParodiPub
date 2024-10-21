@@ -1,27 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import '../../constants.dart';
-import '../../models/product.dart';
-import '../details/details_screen.dart';
-import 'components/categorries.dart';
-import 'components/item_card.dart';
+import 'package:ParodiPub/constants.dart';
+import 'package:ParodiPub/screens/details/details_screen.dart';
+import 'package:ParodiPub/screens/home/components/categorries.dart';
+import 'package:ParodiPub/screens/home/components/item_card.dart';
 import 'package:get/get.dart';
+import 'package:ParodiPub/models/Product.dart';  // Usa Product correttamente
 import 'package:ParodiPub/profile/Account.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  // Usa productList per evitare conflitti
+  List<Product> filteredProducts = List.from(productList); // Inizialmente tutti i prodotti
+
+  // Funzione per filtrare i prodotti in base al tag
+  void filterProductsByCategory(String selectedTag) {
+    setState(() {
+      if (selectedTag == 'All') {
+        filteredProducts = List.from(productList); // Mostra tutti i prodotti
+      } else {
+        filteredProducts = productList.where((product) => product.tag == selectedTag.toLowerCase()).toList();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white, // Colore sfondo app
       appBar: AppBar(
-        backgroundColor: Colors.white,// Colore sfondo navbar
-        elevation: 0,/*
-        leading: IconButton(
-          icon: SvgPicture.asset("assets/icons/back.svg"),
-          onPressed: () {},
-        ),*/
+        backgroundColor: Colors.white,
+        elevation: 0,
         actions: <Widget>[
           IconButton(
             icon: SvgPicture.asset(
@@ -43,10 +58,9 @@ class HomeScreen extends StatelessWidget {
               colorFilter: const ColorFilter.mode(kTextColor, BlendMode.srcIn),
             ),
             onPressed: () {
-              Get.toNamed('/account');  // Usa GetX per navigare alla schermata Account
+              Get.toNamed('/account');
             },
           ),
-
           const SizedBox(width: kDefaultPaddin / 2)
         ],
       ),
@@ -56,19 +70,16 @@ class HomeScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: kDefaultPaddin),
             child: Text(
-              "ParodiPub",
-              style: Theme.of(context)
-                  .textTheme
-                  .titleLarge!
-                  .copyWith(fontWeight: FontWeight.bold),
+              "Our Products",
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
             ),
           ),
-          const Categories(),
+          Categories(onCategorySelected: filterProductsByCategory), // Passa la funzione di filtro
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: kDefaultPaddin),
               child: GridView.builder(
-                itemCount: products.length,
+                itemCount: filteredProducts.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   mainAxisSpacing: kDefaultPaddin,
@@ -76,15 +87,16 @@ class HomeScreen extends StatelessWidget {
                   childAspectRatio: 0.75,
                 ),
                 itemBuilder: (context, index) => ItemCard(
-                  product: products[index],
-                  press: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DetailsScreen(
-                        product: products[index],
+                  product: filteredProducts[index],
+                  press: () {
+                    // Naviga alla schermata dei dettagli
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailsScreen(product: filteredProducts[index]),
                       ),
-                    ),
-                  ),
+                    );
+                  },
                 ),
               ),
             ),

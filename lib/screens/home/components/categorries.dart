@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-
-import '../../../constants.dart';
-
-// We need satefull widget for our categories
+import 'package:ParodiPub/constants.dart';
 
 class Categories extends StatefulWidget {
-  const Categories({super.key});
+  // Aggiungi il callback per comunicare la categoria selezionata
+  final ValueChanged<String> onCategorySelected;
+
+  const Categories({super.key, required this.onCategorySelected});
 
   @override
   State<Categories> createState() => _CategoriesState();
@@ -13,8 +13,8 @@ class Categories extends StatefulWidget {
 
 class _CategoriesState extends State<Categories> {
   List<String> categories = ["All", "Beer", "Wine", "Merch"];
-  // By default our first item will be selected
   int selectedIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -36,6 +36,8 @@ class _CategoriesState extends State<Categories> {
         setState(() {
           selectedIndex = index;
         });
+        // Comunica la categoria selezionata al widget genitore
+        widget.onCategorySelected(categories[index]);
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: kDefaultPaddin),
@@ -50,9 +52,7 @@ class _CategoriesState extends State<Categories> {
               ),
             ),
             Container(
-              margin: const EdgeInsets.only(
-                top: kDefaultPaddin / 8,
-              ), //top padding 5
+              margin: const EdgeInsets.only(top: kDefaultPaddin / 4),
               height: 2,
               width: 30,
               color: selectedIndex == index ? Colors.black : Colors.transparent,

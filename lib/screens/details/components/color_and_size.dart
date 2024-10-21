@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
-import '../../../models/product.dart';
+import 'package:ParodiPub/models/Product.dart';
 
 class ColorAndSize extends StatelessWidget {
   const ColorAndSize({super.key, required this.product});
@@ -39,7 +39,7 @@ class ColorAndSize extends StatelessWidget {
               children: [
                 const TextSpan(text: "Size\n"),
                 TextSpan(
-                  text: "${product.size} cm",
+                  text: "${product.size} cl",
                   style: Theme.of(context)
                       .textTheme
                       .titleLarge!

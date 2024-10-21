@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
-
 import '../../../constants.dart';
-import '../../../models/product.dart';
+import 'package:ParodiPub/models/Product.dart';
 
 class ProductTitleWithImage extends StatelessWidget {
   const ProductTitleWithImage({super.key, required this.product});
 
   final Product product;
+
   @override
   Widget build(BuildContext context) {
+    // Ottieni la larghezza e l'altezza dello schermo
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double screenHeight = MediaQuery.of(context).size.height;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: kDefaultPaddin),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           const Text(
-            "birra numero",
+            "birra",
             style: TextStyle(color: Colors.white),
           ),
           Text(
@@ -38,7 +42,7 @@ class ProductTitleWithImage extends StatelessWidget {
                           .textTheme
                           .headlineSmall!
                           .copyWith(
-                              color: Colors.white, fontWeight: FontWeight.bold),
+                          color: Colors.white, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -47,12 +51,19 @@ class ProductTitleWithImage extends StatelessWidget {
               Expanded(
                 child: Hero(
                   tag: "${product.id}",
-                  child: Image.asset(
-                    product.image,
-                    fit: BoxFit.fill,
+                  child: Align(
+                    alignment: Alignment.centerRight, // Allinea l'immagine a destra
+                    child: SizedBox(
+                      width: screenWidth * 0.5,
+                      height: screenHeight * 0.35,
+                      child: Image.asset(
+                        product.image,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
                   ),
                 ),
-              )
+              ),
             ],
           )
         ],
